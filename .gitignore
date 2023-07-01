@@ -1,3 +1,9 @@
+## Custom gitignore
+data/
+
+
+## Default R gitignore
+
 # History files
 .Rhistory
 .Rapp.history
