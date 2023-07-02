@@ -8,6 +8,7 @@
 #
 
 library(shiny)
+library(leaflet)
 library(tmap)
 library(sf)
 library(dplyr)
@@ -42,7 +43,7 @@ ui <- fluidPage(
         label = "Choose a base map layer",
         choices = c("ESRI gray canvas"   = "Esri.WorldGrayCanvas",
                     "ESRI World imagery" = "Esri.WorldImagery",
-                     "OpenTopoMap"       = "OpenTopoMAp",
+                     "OpenTopoMap"       = "OpenTopoMap",
                      "OpenStreetMap"     = "OpenStreetMap.Mapnik"),
         selected = "Esri.WorldGrayCanvas"
         )
@@ -51,7 +52,7 @@ ui <- fluidPage(
     # Show a plot of the generated distribution
     mainPanel(
       
-      tmapOutput("my_tmap")
+      leafletOutput("my_map", width = "100%", height = "100vh")
       
     )
     
@@ -61,12 +62,15 @@ ui <- fluidPage(
 # Define server logic required to draw a histogram
 server <- function(input, output) {
   
-  output$my_tmap = renderTmap({
+  output$my_map = renderLeaflet({
     
-    tm_basemap(server = input$basemap) +
-      tm_shape(sf_country) + tm_borders(col = "red") +
-      tm_shape(sf_AD) + tm_polygons(col = "redd_FRL", border.col = NA, palette = pal_redd) +
-      tm_shape(sf_AD_square) + tm_borders(col = "yellow")
+    leaflet() %>%
+      addProviderTiles(provider = input$basemap)
+    
+    # tm_basemap(server = input$basemap) +
+    #   tm_shape(sf_country) + tm_borders(col = "red") +
+    #   tm_shape(sf_AD) + tm_polygons(col = "redd_FRL", border.col = NA, palette = pal_redd) +
+    #   tm_shape(sf_AD_square) + tm_borders(col = "yellow")
 
   })
   
