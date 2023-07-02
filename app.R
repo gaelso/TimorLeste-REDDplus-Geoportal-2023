@@ -13,9 +13,9 @@ library(tmap)
 library(sf)
 library(dplyr)
 
-sf_country   <- st_read("data/TImorLeste.geoJSON")
-sf_AD        <- st_read("data/AD-spatial-grid.geoJSON")
-sf_AD_square <- st_read("data/AD-spatial-square.geoJSON")
+sf_country   <- st_read("data/TImorLeste.geoJSON", quiet = T)
+sf_AD        <- st_read("data/AD-spatial-grid.geoJSON", quiet = T)
+sf_AD_square <- st_read("data/AD-spatial-square.geoJSON", quiet = T)
 
 pal_redd <- c("#36B0C7", "#D60602", "#207A20", "grey10")
 
@@ -29,7 +29,7 @@ ui <- fluidPage(
   
   # Application title
   titlePanel(
-    title = div(img(src="banner_en.png", width = '100%')),
+    title = div(img(src="banner_en3.png", width = '100%')),
     windowTitle = "Timor Leste REDD+ Geoportal"
   ),
   
@@ -52,9 +52,9 @@ ui <- fluidPage(
     # Show a plot of the generated distribution
     mainPanel(
       
-      leafletOutput("my_map", width = "100%", height = "100vh")
+      leafletOutput("my_map", width = "100%", height = "80vh")
       
-    )
+      )
     
   ) ## End sidebarLayout
 )## End fluidPage
@@ -64,8 +64,10 @@ server <- function(input, output) {
   
   output$my_map = renderLeaflet({
     
-    leaflet() %>%
-      addProviderTiles(provider = input$basemap)
+    leaflet(options = leafletOptions(minZoom = 8)) %>%
+      addProviderTiles(layerId = "basemap", provider = "Esri.WorldGrayCanvas") %>%
+      setView(125, -9, zoom = 8) %>%
+      setMaxBounds(lng1 = 124, lat1 = -10, lng2 = 128, lat2 = -8)
     
     # tm_basemap(server = input$basemap) +
     #   tm_shape(sf_country) + tm_borders(col = "red") +
@@ -73,6 +75,14 @@ server <- function(input, output) {
     #   tm_shape(sf_AD_square) + tm_borders(col = "yellow")
 
   })
+  
+  ## Update basemap aka tiles
+  observeEvent(input$basemap, {
+    leafletProxy("my_map") %>%
+      removeTiles("basemap") %>%
+      addProviderTiles(layerId = "basemap", input$basemap)
+  })
+  
   
 }
 
