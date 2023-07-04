@@ -1,5 +1,45 @@
 
-shinyServer(function(input, output, session) {
+
+palette_lu <- c('#0f6f09', '#7a8bff', '#1fff10', '#aa6510', '#0a2dd5', '#28b9ff', '#ff4be9', 
+            "#f1ff18", '#f1ff18', '#f1ff18', '#ff8f1c', 'grey10', 'grey10', 'grey10')
+
+lu_conv <- tibble(
+  # lu_name = c(
+  #   "Coastal forest", "Cropland", "Dry lowland forest", "Forest plantation", "Grassland",
+  #   "Mangroves", "Moist high land forest", "Moist lowland forest", "Montane forest",
+  #   "Other land", "Other wooded land", "Settlements", "Shrubs", "Wetland"
+  #   ),
+  lu_id = c("FC", "C", "FDL", "FP", "G", "MF", "FMH", "FML", "FM", "O", "OWL", "S", "SH", "W"),
+  lu_no = c(   5,  11,     3,    7,   8,    6,     1,     2,    4,  14,    10,  12,    9,  13)
+)
+
+year <- 2021
+
+sf_lu <- sf_AD %>% 
+  dplyr::select(id, lu_id = sym(paste0("lu_end", year))) %>%
+  left_join(lu_conv, by = "lu_id") %>%
+  mutate(land_use = forcats::fct_reorder(lu_id, lu_no))
+
+pal_lu <- colorFactor(palette_lu, sf_lu$land_use)
+
+leaflet(options = leafletOptions(minZoom = 8)) |>
+  addProviderTiles(layerId = "basemap", provider = "Esri.WorldGrayCanvas") |>
+  setView(125, -9, zoom = 8) |>
+  setMaxBounds(lng1 = 124, lat1 = -10, lng2 = 128, lat2 = -8) %>%
+  addPolygons(
+    data = sf_lu, group = "lf_grid_lu", stroke = FALSE, smoothFactor = 0.3,
+    fillOpacity = 0.8, fillColor = ~pal_lu(land_use)
+  ) |>
+  addLegend(
+    data = sf_lu, pal = pal_lu, values = ~land_use, group = "lf_grid_lu",
+    position = "topright", title = NA, opacity = 0.8
+  )
+
+
+
+
+
+#shinyServer(function(input, output, session) {
   
   ## Initial Disclaimer ###################################################
   sendSweetAlert(
@@ -139,5 +179,5 @@ shinyServer(function(input, output, session) {
   source("R-app/server/about.R", local = T)
   
   
-}) ## END shinyServer
+#}) ## END shinyServer
 
