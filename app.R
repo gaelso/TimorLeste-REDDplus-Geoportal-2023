@@ -40,7 +40,7 @@ pal_luc <- colorFactor(palette_redd, sf_AD$redd_FRL)
 
 ## Initiate translation
 i18n <- Translator$new(translation_csvs_path = 'translation')
-i18n$set_translation_language('te')
+i18n$set_translation_language('en')
 
 ##
 ## UI ##########################################################################

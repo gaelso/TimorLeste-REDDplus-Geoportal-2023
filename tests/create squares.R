@@ -18,7 +18,7 @@ pal_lu <- c('#0f6f09', '#7a8bff', '#1fff10', '#aa6510', '#0a2dd5', '#28b9ff', '#
 
 ## Load data
 
-sf_country <- st_read("data/TImorLeste.geoJSON")
+sf_country <- st_read("data/TimorLeste.geoJSON")
 
 sf_AD <- st_read("data/AD-spatial-grid.geoJSON")
 
