@@ -1,8 +1,12 @@
 
 /* Remove padding bottom for radioGroupButton */
 
-.navbar.navbar-inverse {
+/*.navbar.navbar-inverse {
   background-color: $primary !important;
+}*/
+
+.navbar-brand {
+  margin-right: 0 !important;
 }
 
 .nav-item>.form-group {

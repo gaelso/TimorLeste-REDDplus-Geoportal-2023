@@ -31,7 +31,8 @@ mod_portal_server <- function(id) {
                           
                         })
                      };
-              $('#tab_portal-redd_opacity').on('shiny:inputchanged', evthandler)}
+              $('#tab_portal-redd_opacity').on('shiny:inputchanged', evthandler);
+              $('#tab_portal-lu_opacity').on('shiny:inputchanged', evthandler)}
           ")
                                                  
     })
@@ -101,39 +102,38 @@ mod_portal_server <- function(id) {
     
     ## ++ Land use annual ++
     observeEvent({
-      input$grid_lu
-      #input$grid_lu_tr
-      input$grid_lu_year
+      input$lu_hex
+      input$lu_year
     }, {
       
       sf_lu <- sf_AD %>% 
-        dplyr::select(id, lu_id = sym(paste0("lu_end", input$grid_lu_year))) %>%
+        dplyr::select(id, lu_id = sym(paste0("lu_end", input$lu_year))) %>%
         left_join(lu_conv, by = "lu_id") %>%
         mutate(land_use = forcats::fct_reorder(lu_id, lu_no))
       
       pal_lu <- colorFactor(palette_lu, sf_lu$land_use)
       
-      if(input$grid_lu) {
-        shinyjs::show("grid_lu_tr")
-        shinyjs::show("grid_lu_year")
-        shinyjs::show("legend_lu")
+      if(input$lu_hex) {
+        shinyjs::show("lu_opacity")
+        shinyjs::show("lu_year")
+        shinyjs::show("lu_legend")
         leafletProxy("my_map") |>
-          clearGroup(group = "lf_grid_lu") |>
+          clearGroup(group = "lf_lu_hex") |>
           clearControls() |>
           addPolygons(
-            data = sf_lu, group = "lf_grid_lu", stroke = FALSE, smoothFactor = 0.3,
-            fillOpacity = input$grid_lu_tr, fillColor = ~pal_lu(land_use)
+            data = sf_lu, group = "lf_lu_hex", stroke = FALSE, smoothFactor = 0.3,
+            fillOpacity = input$lu_opacity, fillColor = ~pal_lu(land_use)
           ) |>
           addLegend(
-            data = sf_lu, pal = pal_lu, values = ~land_use, group = "lf_grid_lu",
+            data = sf_lu, pal = pal_lu, values = ~land_use, group = "lf_lu_hex",
             position = "topright", title = NA, opacity = 0.8
           )
       } else {
-        shinyjs::hide("grid_lu_tr")
-        shinyjs::hide("grid_lu_year")
-        shinyjs::hide("legend_lu")
+        shinyjs::hide("lu_opacity")
+        shinyjs::hide("lu_year")
+        shinyjs::hide("lu_legend")
         leafletProxy("my_map") |>
-          clearGroup(group = "lf_grid_lu") |>
+          clearGroup(group = "lf_lu_hex") |>
           clearControls()
       }
     })

@@ -85,7 +85,7 @@ mod_portal_UI <- function(id){
             )),
             shinyjs::hidden(div(
               id = ns("lu_legend"),
-              em(i18n$t("Legend")),
+              em(i18n$t("Legend:")),
               p(em("FMH = Highland Moist Forest, FML = Lowland Moist Forest, FDL = Lowland Dry foret, FM = Montane Forest, FC = Coastal Forest, MF = Mangrove Forest, FP = Forest Plantation, G = Grassland, SH = Shrubland, OWL = Other Wooded Land, C = Cropland, S = Settlement, W = Wetland, O = Other Land")),
               style = "font-size: small; margin-bottom: 1rem;"
             ))

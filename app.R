@@ -74,7 +74,8 @@ ui <- tagList(
   page_navbar(
     
     ## ++ Styling ++++++
-    title = i18n$t("Timor Leste REDD+ Geoportal"),
+    #title = i18n$t("Timor Leste REDD+ Geoportal"),
+    title = div(HTML('<i class="fi fi-tl"></i>'), i18n$t("Timor Leste REDD+ Geoportal"), style = "display:inline;"),
     theme = bs_theme(
       version = 5,
       bootswatch = "minty",
