@@ -19,6 +19,12 @@
   padding-right: 1rem !important;
 }
 
+.bsblib-sidebar-layout {
+  --bsblib-sidebar-min-width: 250px;
+  --bsblib-sidebar-max-width: 400px;
+}
+
 .bslib-sidebar-layout > .main {
   padding: 0 !important;
 }
+

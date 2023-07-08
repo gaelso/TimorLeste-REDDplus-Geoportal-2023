@@ -10,11 +10,29 @@ mod_portal_server <- function(id) {
       leaflet(options = leafletOptions(minZoom = 8)) |>
         addProviderTiles(layerId = "basemap", provider = "Esri.WorldGrayCanvas") |>
         setView(125, -9, zoom = 8) |>
-        setMaxBounds(lng1 = 124, lat1 = -10, lng2 = 128, lat2 = -8) #|>
-        # leaflet.multiopacity::addOpacityControls(
-        #   group = c("lf_grid_luc"),
-        #   renderOnLayerAdd = TRUE
-        # )
+        setMaxBounds(lng1 = 124, lat1 = -10, lng2 = 128, lat2 = -8) |>
+        htmlwidgets::onRender(
+          "function(el,x,data){
+                     var map = this;
+                     var evthandler = function(e){
+                        console.log('hello world');
+                        var layers = map.layerManager.getVisibleGroups();
+                        console.log('VisibleGroups: ', layers); 
+                        console.log('Target value: ', +e.value);
+                        layers.forEach(function(group) {
+                          var layer = map.layerManager._byGroup[group];
+                          console.log('currently processing: ', group);
+                          Object.keys(layer).forEach(function(el){
+                            if(layer[el] instanceof L.Polygon){;
+                            console.log('Change opacity of: ', group, el);
+                             layer[el].setStyle({fillOpacity:+e.value});
+                            }
+                          });
+                          
+                        })
+                     };
+              $('#tab_portal-redd_opacity').on('shiny:inputchanged', evthandler)}
+          ")
                                                  
     })
     
@@ -28,6 +46,7 @@ mod_portal_server <- function(id) {
     })
     
     ## Show/hide grid layout ------------------------------------------------
+    ## Sampling grid hexagons
     observeEvent(input$grid_layout, {
       if(input$grid_layout){
         leafletProxy("my_map") |>
@@ -40,7 +59,7 @@ mod_portal_server <- function(id) {
       }
     })
     
-    ## Show/hide grid visual interpretation frames
+    ## Sampling grid grid visual interpretation frames
     observeEvent(input$grid_square, {
       if(input$grid_square){
         leafletProxy("my_map") |>
@@ -53,48 +72,39 @@ mod_portal_server <- function(id) {
       }
     })
     
-    ## LULUCF ##################################################################
-    
-    ## Land use change ---------------------------------------------------------
-    observeEvent({
-      input$grid_luc
-      input$grid_luc_tr
-    }, {
-      if(input$grid_luc) {
-        shinyjs::show("grid_luc_tr")
-        shinyjs::show("legend_luc")
+    ## Land use and land use change --------------------------------------------
+    ## ++ REDD+ Activities ++
+    observeEvent(input$redd_hex, {
+      if(input$redd_hex) {
+        shinyjs::show("redd_opacity")
+        shinyjs::show("redd_legend")
         pal_luc <- colorFactor(palette_redd, sf_AD$redd_FRL)
         leafletProxy("my_map") |>
-          clearGroup(group = "lf_grid_luc") |>
+          # clearGroup(group = "lf_grid_luc") |>
           clearControls() |>
-          # addPolygons(
-          #   data = sf_AD, group = "lf_grid_luc", stroke = FALSE, smoothFactor = 0.3,
-          #   fillColor = ~pal_luc(redd_FRL), fillOpacity = 1
-          # ) |>
           addPolygons(
             data = sf_AD, group = "lf_grid_luc", stroke = FALSE, smoothFactor = 0.3,
-            fillColor = ~pal_luc(redd_FRL), fillOpacity = input$grid_luc_tr
+            fillColor = ~pal_luc(redd_FRL), fillOpacity = input$redd_opacity
           ) |>
           addLegend(
             data = sf_AD, pal = pal_luc, values = ~redd_FRL, group = "lf_grid_luc",
             position = "topright", title = NA, opacity = 0.8
           )
       } else {
-        shinyjs::hide("grid_luc_tr")
-        shinyjs::hide("legend_luc")
+        shinyjs::hide("redd_opacity")
+        shinyjs::hide("redd_legend")
         leafletProxy("my_map") |>
           clearGroup(group = "lf_grid_luc") |>
           clearControls()
       }
     })
     
-    ## Land use annual ---------------------------------------------------------
+    ## ++ Land use annual ++
     observeEvent({
       input$grid_lu
-      input$grid_lu_tr
+      #input$grid_lu_tr
       input$grid_lu_year
     }, {
-      # print(input$grid_lu_tr)
       
       sf_lu <- sf_AD %>% 
         dplyr::select(id, lu_id = sym(paste0("lu_end", input$grid_lu_year))) %>%

@@ -47,9 +47,11 @@ language_selector <- shinyWidgets::radioGroupButtons(
   )
 
 ## Source modules
+source("R/mod_home_UI.R", local = TRUE)
+source("R/mod_home_server.R", local = TRUE)
 source("R/mod_portal_UI.R", local = TRUE)
 source("R/mod_portal_server.R", local = TRUE)
-# source("R/portal_UI.R", local = TRUE)
+
 
 ##
 ## UI ##########################################################################
@@ -57,7 +59,7 @@ source("R/mod_portal_server.R", local = TRUE)
 
 ui <- tagList(
   
-  ## Setup
+  ## Setup ---------------------------------------------------------------------
   shinyjs::useShinyjs(),
   shiny.i18n::usei18n(i18n),
   tags$head(tags$link(rel = "stylesheet", type = "text/css", href = "style.css")),
@@ -68,10 +70,10 @@ ui <- tagList(
     stylesheet = "css/flag-icons.min.css"
   ),
   
-  ## UI elements
+  ## UI elements ---------------------------------------------------------------
   page_navbar(
     
-    ## Styling
+    ## ++ Styling ++++++
     title = i18n$t("Timor Leste REDD+ Geoportal"),
     theme = bs_theme(
       version = 5,
@@ -83,15 +85,14 @@ ui <- tagList(
     fillable = "portal",
     bg = "#f8f9fa",
     
-    ## Panels
-    #nav_item(div(style = "margin-right:40px;")),
-    
+    ## ++ Panels +++++
     nav_panel(
       title = i18n$t("Home"), 
       value = "home", 
-      icon = icon("campground"), 
-      p("Whereas disregard and contempt for human rights have resulted")
+      icon = icon("campground"),
+      mod_home_UI("tab_home") ## See R/mod_home_UI.R
       ),
+    
     
     nav_panel(
       title = i18n$t("Portal"), 
@@ -100,7 +101,11 @@ ui <- tagList(
       mod_portal_UI("tab_portal") ## See R/mod_portal_UI.R
     ),
     
-    nav_panel(title = i18n$t("Calculations"), value = "calc", icon = icon("chart-line"), p("calculations")),
+    nav_panel(
+      title = i18n$t("Calculations"), 
+      value = "calc", 
+      icon = icon("chart-line"), 
+      h4("Place holder for calculations")),
     
     nav_spacer(),
     
