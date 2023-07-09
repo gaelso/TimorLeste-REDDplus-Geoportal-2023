@@ -16,7 +16,8 @@ mod_portal_UI <- function(id){
       sidebar = sidebar(
         width = "33%",
         accordion(
-          open = "accordion_hexmaps",
+          open = TRUE, #"accordion_hexmaps",
+          multiple = TRUE,
           
           ## Basemap layer -------------------------------------------------------
           accordion_panel(

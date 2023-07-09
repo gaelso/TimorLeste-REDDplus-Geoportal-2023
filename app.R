@@ -72,6 +72,7 @@ ui <- tagList(
     src = c(href="https://cdn.jsdelivr.net/gh/lipis/flag-icons@6.6.6/"), 
     stylesheet = "css/flag-icons.min.css"
   ),
+  tags$head(includeHTML("google-analytics.html")),
   # img(src = "banner_en3.png"),
   
   ## UI elements ---------------------------------------------------------------
