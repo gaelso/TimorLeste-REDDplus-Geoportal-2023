@@ -78,7 +78,7 @@ ui <- tagList(
   page_navbar(
     
     ## ++ Styling ++++++
-    #title = i18n$t("Timor Leste REDD+ Geoportal"),
+    # title = NULL,
     title = div(HTML('<i class="fi fi-tl"></i>'), i18n$t("Timor Leste REDD+ Geoportal"), style = "display:inline;"),
     window_title = "TL REDD+ Geoportal",
     theme = bs_theme(
@@ -117,10 +117,8 @@ ui <- tagList(
     
     nav_item(language_selector)
     
-  ) %>% tagAppendAttributes(
-    .cssSelector = "nav", 
-    class = "navbar-expand-lg"
-  ) ## End page_navbar
+  ) |> ## End page_navbar
+    tagAppendAttributes(.cssSelector = "nav", class = "navbar-expand-lg") 
 ) ## End tagList
   
 # 

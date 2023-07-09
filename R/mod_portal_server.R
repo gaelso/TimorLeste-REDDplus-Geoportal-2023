@@ -9,6 +9,7 @@ mod_portal_server <- function(id) {
     output$my_map <- renderLeaflet({
       leaflet(options = leafletOptions(minZoom = 8)) |>
         addProviderTiles(layerId = "basemap", provider = "Esri.WorldGrayCanvas") |>
+        addPolygons(data = sf_country, fill = NA, color = "darkred", weight = 1) |>
         setView(125, -9, zoom = 8) |>
         setMaxBounds(lng1 = 124, lat1 = -10, lng2 = 128, lat2 = -8) |>
         htmlwidgets::onRender(
@@ -137,6 +138,12 @@ mod_portal_server <- function(id) {
         shinyjs::hide("lu_opacity")
         shinyjs::hide("lu_year")
         shinyjs::hide("lu_abbreviations")
+        
+        leafletProxy("my_map") |>
+          clearGroup(group = "redd_group") |>
+          removeControl(layerId = "redd_legend") |>
+          clearGroup(group = "lu_group") |>
+          removeControl(layerId = "lu_legend")
       }
       
     })
