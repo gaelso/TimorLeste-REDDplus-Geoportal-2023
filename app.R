@@ -53,7 +53,8 @@ source("R/mod_home_UI.R", local = TRUE)
 source("R/mod_home_server.R", local = TRUE)
 source("R/mod_portal_UI.R", local = TRUE)
 source("R/mod_portal_server.R", local = TRUE)
-
+source("R/mod_calc_UI.R", local = TRUE)
+source("R/mod_calc_server.R", local = TRUE)
 
 ##
 ## UI ##########################################################################
@@ -71,6 +72,7 @@ ui <- tagList(
     src = c(href="https://cdn.jsdelivr.net/gh/lipis/flag-icons@6.6.6/"), 
     stylesheet = "css/flag-icons.min.css"
   ),
+  # img(src = "banner_en3.png"),
   
   ## UI elements ---------------------------------------------------------------
   page_navbar(
@@ -97,7 +99,6 @@ ui <- tagList(
       mod_home_UI("tab_home") ## See R/mod_home_UI.R
       ),
     
-    
     nav_panel(
       title = i18n$t("Portal"), 
       value = "portal", 
@@ -109,7 +110,8 @@ ui <- tagList(
       title = i18n$t("Calculations"), 
       value = "calc", 
       icon = icon("chart-line"), 
-      h4("Place holder for calculations")),
+      mod_calc_UI("tab_calc") ## See R/mod_calc_UI.R
+    ),
     
     nav_spacer(),
     
