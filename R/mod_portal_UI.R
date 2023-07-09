@@ -49,34 +49,45 @@ mod_portal_UI <- function(id){
           
           ## Hex maps ------------------------------------------------------------
           accordion_panel(
-            title = i18n$t("Land use and land use change"),
+            title = i18n$t("Land use and land use change hexmaps"),
             value = "accordion_hexmaps",
             
-            ## ++ REDD+ activities hex map ++
-            checkboxInput(
-              inputId = ns("redd_hex"), 
-              label = i18n$t("REDD+ activities hexmap")
+            radioButtons(
+              inputId = ns("lulucf"),
+              label = NULL,
+              choices = c(
+                "None" = "none",
+                "REDD+ activities hexmap" = "redd_hex",
+                "Annual land use hex map" = "lu_hex"
+              ),
+              selected = "none"
             ),
+            
+            ## ++ REDD+ activities controls ++
+            # checkboxInput(
+            #   inputId = ns("redd_hex"), 
+            #   label = i18n$t("REDD+ activities hexmap")
+            # ),
             shinyjs::hidden(sliderInput(
               inputId = ns("redd_opacity"), label = NULL, min = 0, max = 1, step = 0.1,
-              value = 1, ticks = FALSE,
+              value = 1, ticks = FALSE
             )),
             shinyjs::hidden(div(
-              id = ns("redd_legend"), 
-              em(i18n$t("Legend:")),
+              id = ns("redd_abbreviations"), 
+              em(i18n$t("Legend abbreviations:")),
               p(em("AF = Afforestation, DF = Deforestation, SF = Stable Forest, SNF = Stable Non-Forest")),
               style = "font-size: small; margin-bottom: 1rem;" 
             )),
             
-            ## ++ Land use annual ++ 
-            checkboxInput(
-              inputId = ns("lu_hex"), 
-              label = i18n$t("Annual land use hex map")
-            ),
+            ## ++ Land use annual controls ++ 
+            # checkboxInput(
+            #   inputId = ns("lu_hex"), 
+            #   label = i18n$t("Annual land use hex map")
+            # ),
             shinyjs::hidden(sliderInput(
               inputId = ns("lu_opacity"), 
               label = NULL, min = 0, max = 1, step = 0.1, value = 1, 
-              ticks = FALSE, 
+              ticks = FALSE
             )),
             shinyjs::hidden(sliderInput(
               inputId = ns("lu_year"), 
@@ -84,8 +95,8 @@ mod_portal_UI <- function(id){
               ticks = FALSE, sep = ""
             )),
             shinyjs::hidden(div(
-              id = ns("lu_legend"),
-              em(i18n$t("Legend:")),
+              id = ns("lu_abbreviations"),
+              em(i18n$t("Legend abreviations:")),
               p(em("FMH = Highland Moist Forest, FML = Lowland Moist Forest, FDL = Lowland Dry foret, FM = Montane Forest, FC = Coastal Forest, MF = Mangrove Forest, FP = Forest Plantation, G = Grassland, SH = Shrubland, OWL = Other Wooded Land, C = Cropland, S = Settlement, W = Wetland, O = Other Land")),
               style = "font-size: small; margin-bottom: 1rem;"
             ))

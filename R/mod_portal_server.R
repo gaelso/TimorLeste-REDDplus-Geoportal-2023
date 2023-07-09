@@ -74,69 +74,140 @@ mod_portal_server <- function(id) {
     })
     
     ## Land use and land use change --------------------------------------------
-    ## ++ REDD+ Activities ++
-    observeEvent(input$redd_hex, {
-      if(input$redd_hex) {
-        shinyjs::show("redd_opacity")
-        shinyjs::show("redd_legend")
-        pal_luc <- colorFactor(palette_redd, sf_AD$redd_FRL)
-        leafletProxy("my_map") |>
-          # clearGroup(group = "lf_grid_luc") |>
-          clearControls() |>
-          addPolygons(
-            data = sf_AD, group = "lf_grid_luc", stroke = FALSE, smoothFactor = 0.3,
-            fillColor = ~pal_luc(redd_FRL), fillOpacity = input$redd_opacity
-          ) |>
-          addLegend(
-            data = sf_AD, pal = pal_luc, values = ~redd_FRL, group = "lf_grid_luc",
-            position = "topright", title = NA, opacity = 0.8
-          )
-      } else {
-        shinyjs::hide("redd_opacity")
-        shinyjs::hide("redd_legend")
-        leafletProxy("my_map") |>
-          clearGroup(group = "lf_grid_luc") |>
-          clearControls()
-      }
-    })
-    
-    ## ++ Land use annual ++
     observeEvent({
-      input$lu_hex
+      input$lulucf
       input$lu_year
     }, {
       
-      sf_lu <- sf_AD %>% 
-        dplyr::select(id, lu_id = sym(paste0("lu_end", input$lu_year))) %>%
-        left_join(lu_conv, by = "lu_id") %>%
-        mutate(land_use = forcats::fct_reorder(lu_id, lu_no))
+      # ## ++ Set land use year data ++
+      # if (req(input$lulucf == "lu_hex")) {
+      #   
+      # }
       
-      pal_lu <- colorFactor(palette_lu, sf_lu$land_use)
-      
-      if(input$lu_hex) {
+      ## ++ Toggle hexmaps ++
+      if (input$lulucf == "redd_hex") {
+        shinyjs::hide("lu_opacity")
+        shinyjs::hide("lu_year")
+        shinyjs::hide("lu_abbreviations")
+        shinyjs::show("redd_opacity")
+        shinyjs::show("redd_abbreviations")
+        
+        pal_luc <- colorFactor(palette_redd, sf_AD$redd_FRL)
+        
+        leafletProxy("my_map") |>
+          clearGroup(group = "lu_group") |>
+          removeControl(layerId = "lu_legend") |>
+          addPolygons(
+            data = sf_redd, group = "redd_group", stroke = FALSE, smoothFactor = 0.3,
+            fillColor = ~pal_luc(redd_FRL), fillOpacity = input$redd_opacity
+          ) |>
+          addLegend(
+            layerId = "redd_legend", data = sf_AD, pal = pal_luc, values = ~redd_FRL, 
+            group = "redd_group", position = "topright", title = NA, opacity = 0.8
+          )
+      } else if (input$lulucf == "lu_hex") {
+        shinyjs::hide("redd_opacity")
+        shinyjs::hide("redd_abbreviations")
         shinyjs::show("lu_opacity")
         shinyjs::show("lu_year")
-        shinyjs::show("lu_legend")
+        shinyjs::show("lu_abbreviations")
+        
+        sf_lu <- sf_AD %>%
+          dplyr::select(id, lu_id = sym(paste0("lu_end", input$lu_year))) %>%
+          left_join(lu_conv, by = "lu_id") %>%
+          mutate(land_use = forcats::fct_reorder(lu_id, lu_no))
+        pal_lu <- colorFactor(palette_lu, sf_lu$land_use)
+        
         leafletProxy("my_map") |>
-          clearGroup(group = "lf_lu_hex") |>
-          clearControls() |>
+          clearGroup(group = "redd_group") |>
+          removeControl(layerId = "redd_legend") |>
+          clearGroup(group = "lu_group") |>
+          removeControl(layerId = "lu_legend") |>
           addPolygons(
-            data = sf_lu, group = "lf_lu_hex", stroke = FALSE, smoothFactor = 0.3,
+            data = sf_lu, group = "lu_group", stroke = FALSE, smoothFactor = 0.3,
             fillOpacity = input$lu_opacity, fillColor = ~pal_lu(land_use)
           ) |>
           addLegend(
-            data = sf_lu, pal = pal_lu, values = ~land_use, group = "lf_lu_hex",
-            position = "topright", title = NA, opacity = 0.8
+            layerId = "lu_legend", data = sf_lu, pal = pal_lu, values = ~land_use, 
+            group = "lu_group", position = "topright", title = NA, opacity = 0.8
           )
       } else {
+        shinyjs::hide("redd_opacity")
+        shinyjs::hide("redd_abbreviations")
         shinyjs::hide("lu_opacity")
         shinyjs::hide("lu_year")
-        shinyjs::hide("lu_legend")
-        leafletProxy("my_map") |>
-          clearGroup(group = "lf_lu_hex") |>
-          clearControls()
+        shinyjs::hide("lu_abbreviations")
       }
+      
     })
+    
+    
+
+    
+    
+    # ## ++ REDD+ Activities ++
+    # observeEvent(input$redd_hex, {
+    #   if(input$redd_hex) {
+    #     shinyjs::show("redd_opacity")
+    #     shinyjs::show("redd_legend")
+    #     pal_luc <- colorFactor(palette_redd, sf_AD$redd_FRL)
+    #     leafletProxy("my_map") |>
+    #       # clearGroup(group = "lf_grid_luc") |>
+    #       clearControls() |>
+    #       addPolygons(
+    #         data = sf_AD, group = "lf_grid_luc", stroke = FALSE, smoothFactor = 0.3,
+    #         fillColor = ~pal_luc(redd_FRL), fillOpacity = input$redd_opacity
+    #       ) |>
+    #       addLegend(
+    #         data = sf_AD, pal = pal_luc, values = ~redd_FRL, group = "lf_grid_luc",
+    #         position = "topright", title = NA, opacity = 0.8
+    #       )
+    #   } else {
+    #     shinyjs::hide("redd_opacity")
+    #     shinyjs::hide("redd_legend")
+    #     leafletProxy("my_map") |>
+    #       clearGroup(group = "lf_grid_luc") |>
+    #       clearControls()
+    #   }
+    # })
+    # 
+    # ## ++ Land use annual ++
+    # observeEvent({
+    #   input$lu_hex
+    #   input$lu_year
+    # }, {
+    #   
+    #   sf_lu <- sf_AD %>% 
+    #     dplyr::select(id, lu_id = sym(paste0("lu_end", input$lu_year))) %>%
+    #     left_join(lu_conv, by = "lu_id") %>%
+    #     mutate(land_use = forcats::fct_reorder(lu_id, lu_no))
+    #   
+    #   pal_lu <- colorFactor(palette_lu, sf_lu$land_use)
+    #   
+    #   if(input$lu_hex) {
+    #     shinyjs::show("lu_opacity")
+    #     shinyjs::show("lu_year")
+    #     shinyjs::show("lu_legend")
+    #     leafletProxy("my_map") |>
+    #       clearGroup(group = "lf_lu_hex") |>
+    #       clearControls() |>
+    #       addPolygons(
+    #         data = sf_lu, group = "lf_lu_hex", stroke = FALSE, smoothFactor = 0.3,
+    #         fillOpacity = input$lu_opacity, fillColor = ~pal_lu(land_use)
+    #       ) |>
+    #       addLegend(
+    #         data = sf_lu, pal = pal_lu, values = ~land_use, group = "lf_lu_hex",
+    #         position = "topright", title = NA, opacity = 0.8
+    #       )
+    #   } else {
+    #     shinyjs::hide("lu_opacity")
+    #     shinyjs::hide("lu_year")
+    #     shinyjs::hide("lu_legend")
+    #     leafletProxy("my_map") |>
+    #       clearGroup(group = "lf_lu_hex") |>
+    #       clearControls()
+    #   }
+    # })
     
   }) ## END module server function
   

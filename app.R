@@ -23,6 +23,8 @@ sf_country   <- st_read("data/TimorLeste.geoJSON", quiet = T)
 sf_AD        <- st_read("data/AD-spatial-grid2.geoJSON", quiet = T)
 sf_AD_square <- st_read("data/AD-spatial-square.geoJSON", quiet = T)
 
+sf_redd <- sf_AD %>% select(id, redd_FRL)
+
 palette_redd <- c("#36B0C7", "#D60602", "#207A20", "grey10")
 
 palette_lu <- c('#0f6f09', '#7a8bff', '#1fff10', '#aa6510', '#0a2dd5', '#28b9ff', '#ff4be9', 
@@ -76,6 +78,7 @@ ui <- tagList(
     ## ++ Styling ++++++
     #title = i18n$t("Timor Leste REDD+ Geoportal"),
     title = div(HTML('<i class="fi fi-tl"></i>'), i18n$t("Timor Leste REDD+ Geoportal"), style = "display:inline;"),
+    window_title = "TL REDD+ Geoportal",
     theme = bs_theme(
       version = 5,
       bootswatch = "minty",
