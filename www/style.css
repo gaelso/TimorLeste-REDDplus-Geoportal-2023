@@ -23,6 +23,12 @@
   padding-right: 1rem !important;
 }
 
+[data-value="home"] {
+  max-width: 1200px;
+  margin-right: auto;
+  margin-left: auto;
+}
+
 .frl-card {
   font-size:large; 
   text-align: center; 

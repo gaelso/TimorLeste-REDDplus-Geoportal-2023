@@ -14,7 +14,7 @@ mod_portal_UI <- function(id){
       
       ## Sidebar ###############################################################
       sidebar = sidebar(
-        width = "33%",
+        width = "320px",
         accordion(
           open = TRUE, #"accordion_hexmaps",
           multiple = TRUE,

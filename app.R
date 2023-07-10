@@ -18,6 +18,8 @@ library(dplyr)
 library(forcats)
 library(shinyjs)
 library(shiny.i18n)
+library(shinyWidgets)
+library(bsicons)
 
 sf_country   <- st_read("data/TimorLeste.geoJSON", quiet = T)
 sf_AD        <- st_read("data/AD-spatial-grid2.geoJSON", quiet = T)
@@ -40,13 +42,22 @@ i18n <- Translator$new(translation_csvs_path = 'translation')
 i18n$set_translation_language('en')
 
 ## UI element Language selector
-language_selector <- shinyWidgets::radioGroupButtons(
+# language_selector <- shinyWidgets::radioGroupButtons(
+#   inputId = "language",
+#   label = NULL, 
+#   choiceNames = c('<i class="fi fi-gb"></i> EN', '<i class="fi fi-tl"></i> TL'),
+#   choiceValues = c("en", "te"),
+#   selected = "en"
+#   )
+
+language_selector2 <- shinyWidgets::pickerInput(
   inputId = "language",
   label = NULL, 
-  choiceNames = c('<i class="fi fi-gb"></i> EN', '<i class="fi fi-tl"></i> TL'),
-  choiceValues = c("en", "te"),
-  selected = "en"
-  )
+  choices = c("en", "te"),
+  choicesOpt =  list(content = c('<i class="fi fi-gb"></i> EN', '<i class="fi fi-tl"></i> TL')),
+  selected = "en",
+  width = "auto"
+)
 
 ## Source modules
 source("R/mod_home_UI.R", local = TRUE)
@@ -58,7 +69,7 @@ source("R/mod_calc_server.R", local = TRUE)
 
 ##
 ## UI ##########################################################################
-##
+#
 
 ui <- tagList(
   
@@ -72,9 +83,9 @@ ui <- tagList(
     src = c(href="https://cdn.jsdelivr.net/gh/lipis/flag-icons@6.6.6/"), 
     stylesheet = "css/flag-icons.min.css"
   ),
-  tags$head(includeHTML("google-analytics.html")),
-  # img(src = "banner_en3.png"),
-  
+  # tags$body(includeHTML("piwik-tracker.html")),
+  tags$head(includeHTML("piwik-tracker-draft-sync.html")),
+  tags$body(includeHTML("piwik-tracker-draft.html")),
   ## UI elements ---------------------------------------------------------------
   page_navbar(
     
@@ -116,7 +127,7 @@ ui <- tagList(
     
     nav_spacer(),
     
-    nav_item(language_selector)
+    nav_item(language_selector2)
     
   ) |> ## End page_navbar
     tagAppendAttributes(.cssSelector = "nav", class = "navbar-expand-lg") 

@@ -8,35 +8,59 @@ mod_home_UI <- function(id){
   ns <- NS(id)
   
   ## UI elements wrapped in a tagList() function
-  # tagList(
+  tagList(
     
-    layout_columns(
-      col_widths = c(4, 4, 4, 12),
-      row_heights = c(1, 5),
+      ## FREL/FRL cards --------------------------------------------------------
       card(
-        card_header(h5("FREL", icon("arrow-up"))),
-        div("412,532 tCO2e/year", class = "frl-card"),
-        class = "bg-secondary"
+        layout_columns(
+          fill = FALSE,
+          value_box( 
+            title = "FREL", 
+            value = "412,532",
+            showcase = bsicons::bs_icon("arrow-up", size = NULL),
+            theme_color = "secondary"
+          ),
+          value_box(
+            title = "Removals",
+            value = "-747,694",
+            showcase = bsicons::bs_icon("arrow-down", size = NULL),
+            theme_color = "primary"
+          ),
+          value_box(
+            title = "FRL",
+            value = "-335,162",
+            showcase = bsicons::bs_icon("arrow-down-up", size = NULL),
+            theme_color = "info"
+          )
+        ),
+        
+        div(
+          em("Forest Reference (Emission) Levels 2017-2021 (tCO2e/year)"), 
+          style = "text-align: center; font-size: small;"
+        )
+        
       ),
-      card(
-        card_header(h5("Removals", icon("arrow-down"))),
-        div("-747,694 tCO2e/year", class = "frl-card"),
-        class = "bg-primary"
-      ),
-      card(
-        card_header(h5("FRL", icon("arrow-down"))),
-        div("-335,162 tCO2e/year", class = "frl-card"),
-        class = "bg-info"
-      ),
+      
+      ## Intro -----------------------------------------------------------------
       card(
         #card_header(h4("Welcome to Timor Leste REDD+ Geoportal")),
-        img(src = "banner_en3.png"),
-        h4("Placeholder for home content", style = "text-align: center; margin-top: auto; margin-bottom: auto;"),
+        img(
+          src = "banner_en3.png", 
+          style = "width: 100%; max-width: 1200px; margin-left: auto; margin-right: auto;"
+        ),
+        h4("Welcome!"),
+        p("This portal shows spatial data and tables related to Timor Leste engagment in REDD+, the mechanism to reduce greenhouse gas (GHG) emissions from Deforestation, Forest Degradation, plus the role of sustainable forest management, conservation and enhancement of forest carbon stocks.")
+      ),
+      
+      ## Details ---------------------------------------------------------------
+      card(
+        h5("Presentation of the data"),
+        p("More specifically the data presented here are average levels of GHG emissions and removals from REDD+ activities, in tCO2e/year, used as a baseline or reference level against which future performances on emission reductions can be compared."),
+        h4(
+          "Placeholder for home content", 
+          style = "text-align: center; margin-top: auto; margin-bottom: auto;"
+        ),
       )
-    )
-    
-    
-  
-  # ) ## END tagList
+  )
   
 } ## END module UI function
