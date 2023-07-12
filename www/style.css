@@ -23,26 +23,19 @@
   padding-right: 1rem !important;
 }
 
-[data-value="home"] {
+/*[data-value="home"] {
   max-width: 1200px;
   margin-right: auto;
   margin-left: auto;
-}
-
-.frl-card {
-  font-size:large; 
-  text-align: center; 
-  margin-top: auto; 
-  margin-bottom: auto;
-}
+}*/
 
 
-.bsblib-sidebar-layout {
+/*.bsblib-sidebar-layout {
   --bsblib-sidebar-min-width: 250px;
   --bsblib-sidebar-max-width: 400px;
-}
+}*/
 
-.bslib-sidebar-layout > .main {
+/*.bslib-sidebar-layout > .main {
   padding: 0 !important;
-}
+}*/
 

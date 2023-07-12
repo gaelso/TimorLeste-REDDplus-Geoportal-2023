@@ -11,6 +11,7 @@ mod_portal_UI <- function(id){
   #tagList(
     
     card(layout_sidebar(
+      padding = 0, 
       
       ## Sidebar ###############################################################
       sidebar = sidebar(
