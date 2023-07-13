@@ -66,6 +66,7 @@ source("R/mod_portal_UI.R", local = TRUE)
 source("R/mod_portal_server.R", local = TRUE)
 source("R/mod_calc_UI.R", local = TRUE)
 source("R/mod_calc_server.R", local = TRUE)
+source("R/mod_about_UI.R", local = TRUE)
 
 ##
 ## UI ##########################################################################
@@ -123,6 +124,13 @@ ui <- tagList(
       value = "calc", 
       icon = icon("chart-line"), 
       mod_calc_UI("tab_calc") ## See R/mod_calc_UI.R
+    ),
+    
+    nav_panel(
+      title = i18n$t("About"), 
+      value = "calc", 
+      icon = icon("lightbulb"), 
+      mod_about_UI("tab_about") ## See R/mod_about_UI.R
     ),
     
     nav_spacer(),

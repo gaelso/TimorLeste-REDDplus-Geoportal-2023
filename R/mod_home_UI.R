@@ -97,7 +97,9 @@ mod_home_UI <- function(id){
       home_spatial,
       home_calc,
       home_about
-    )
+    ), 
+    
+    br()
     
   )
   
