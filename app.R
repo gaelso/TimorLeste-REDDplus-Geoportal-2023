@@ -7,6 +7,11 @@
 #    http://shiny.rstudio.com/
 #
 
+
+##
+## GLOBAL ######################################################################
+##
+
 library(shiny)
 library(bslib)
 library(crosstalk)
@@ -68,9 +73,11 @@ source("R/mod_calc_UI.R", local = TRUE)
 source("R/mod_calc_server.R", local = TRUE)
 source("R/mod_about_UI.R", local = TRUE)
 
+
+
 ##
 ## UI ##########################################################################
-#
+##
 
 ui <- tagList(
   
@@ -85,8 +92,11 @@ ui <- tagList(
     stylesheet = "css/flag-icons.min.css"
   ),
   # tags$body(includeHTML("piwik-tracker.html")),
-  tags$head(includeHTML("piwik-tracker-draft-sync.html")),
-  tags$body(includeHTML("piwik-tracker-draft.html")),
+  # tags$head(includeHTML("piwik-tracker-draft-sync.html")),
+  # tags$body(includeHTML("piwik-tracker-draft.html")),
+  tags$head(includeHTML("ga-tracker-draft-head.html")),
+  tags$body(includeHTML("ga-tracker-draft-body.html")),
+  
   ## UI elements ---------------------------------------------------------------
   page_navbar(
     
