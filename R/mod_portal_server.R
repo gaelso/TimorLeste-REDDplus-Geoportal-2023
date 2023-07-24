@@ -7,6 +7,7 @@ mod_portal_server <- function(id) {
     
     ## OUTPUTS #################################################################
     output$my_map <- renderLeaflet({
+      
       leaflet(options = leafletOptions(minZoom = 8)) |>
         addProviderTiles(layerId = "basemap", provider = "Esri.WorldGrayCanvas") |>
         addPolygons(data = sf_country, fill = NA, color = "darkred", weight = 1) |>
@@ -76,7 +77,7 @@ mod_portal_server <- function(id) {
     
     ## Land use and land use change --------------------------------------------
     observeEvent({
-      input$lulucf
+      input$hexmap
       input$lu_year
     }, {
       
@@ -86,27 +87,28 @@ mod_portal_server <- function(id) {
       # }
       
       ## ++ Toggle hexmaps ++
-      if (input$lulucf == "redd_hex") {
+      if (input$hexmap == "redd_hex") {
         shinyjs::hide("lu_opacity")
         shinyjs::hide("lu_year")
         shinyjs::hide("lu_abbreviations")
         shinyjs::show("redd_opacity")
         shinyjs::show("redd_abbreviations")
         
-        pal_luc <- colorFactor(palette_redd, sf_AD$redd_FRL)
+        pal_redd <- colorFactor(palette_redd, sf_AD$redd_FRL)
         
         leafletProxy("my_map") |>
           clearGroup(group = "lu_group") |>
           removeControl(layerId = "lu_legend") |>
           addPolygons(
             data = sf_redd, group = "redd_group", stroke = FALSE, smoothFactor = 0.3,
-            fillColor = ~pal_luc(redd_FRL), fillOpacity = input$redd_opacity
+            fillColor = ~pal_redd(redd_FRL), fillOpacity = input$redd_opacity
           ) |>
           addLegend(
             layerId = "redd_legend", data = sf_AD, pal = pal_luc, values = ~redd_FRL, 
             group = "redd_group", position = "topright", title = NA, opacity = 0.8
           )
-      } else if (input$lulucf == "lu_hex") {
+        
+      } else if (input$hexmap == "lu_hex") {
         shinyjs::hide("redd_opacity")
         shinyjs::hide("redd_abbreviations")
         shinyjs::show("lu_opacity")
@@ -117,6 +119,7 @@ mod_portal_server <- function(id) {
           dplyr::select(id, lu_id = sym(paste0("lu_end", input$lu_year))) %>%
           left_join(lu_conv, by = "lu_id") %>%
           mutate(land_use = forcats::fct_reorder(lu_id, lu_no))
+        
         pal_lu <- colorFactor(palette_lu, sf_lu$land_use)
         
         leafletProxy("my_map") |>

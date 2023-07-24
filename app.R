@@ -14,33 +14,25 @@
 
 library(shiny)
 library(bslib)
-library(crosstalk)
+#library(crosstalk)
 library(leaflet)
-library(leaflet.multiopacity)
-library(tmap)
 library(sf)
 library(dplyr)
+library(ggplot2)
 library(forcats)
+library(readxl)
 library(shinyjs)
 library(shiny.i18n)
 library(shinyWidgets)
 library(bsicons)
 
-sf_country   <- st_read("data/TimorLeste.geoJSON", quiet = T)
-sf_AD        <- st_read("data/AD-spatial-grid2.geoJSON", quiet = T)
-sf_AD_square <- st_read("data/AD-spatial-square.geoJSON", quiet = T)
+## Load data
+source("R/data-AD.R", local = TRUE)
+#source("R/data-EF.R", local = TRUE)
 
-sf_redd <- sf_AD %>% select(id, redd_FRL)
-
-palette_redd <- c("#36B0C7", "#D60602", "#207A20", "grey10")
-
-palette_lu <- c('#0f6f09', '#7a8bff', '#1fff10', '#aa6510', '#0a2dd5', '#28b9ff', '#ff4be9', 
-                "#f1ff18", '#f1ff18', '#f1ff18', '#ff8f1c', 'grey10', 'grey10', 'grey10')
-
-lu_conv <- tibble(
-  lu_id = c("FC", "C", "FDL", "FP", "G", "MF", "FMH", "FML", "FM", "O", "OWL", "S", "SH", "W"),
-  lu_no = c(   5,  11,     3,    7,   8,    6,     1,     2,    4,  14,    10,  12,    9,  13)
-)
+## Load Extra functions for leaflet setStyle() and setShapeStyle()
+source("R/leaflet-setStyle-js.R", local = TRUE)
+source("R/leaflet-setShapeStyle.R", local = TRUE)
 
 ## Initiate translation
 i18n <- Translator$new(translation_csvs_path = 'translation')
@@ -61,7 +53,8 @@ language_selector2 <- shinyWidgets::pickerInput(
   choices = c("en", "te"),
   choicesOpt =  list(content = c('<i class="fi fi-gb"></i> EN', '<i class="fi fi-tl"></i> TL')),
   selected = "en",
-  width = "auto"
+  width = "auto",
+  option = pickerOptions(style = "z-index:10000;")
 )
 
 ## Source modules
@@ -82,6 +75,7 @@ source("R/mod_about_UI.R", local = TRUE)
 ui <- tagList(
   
   ## Setup ---------------------------------------------------------------------
+  shiny::withMathJax(),
   shinyjs::useShinyjs(),
   shiny.i18n::usei18n(i18n),
   tags$head(tags$link(rel = "stylesheet", type = "text/css", href = "style.css")),
@@ -96,7 +90,7 @@ ui <- tagList(
   # tags$body(includeHTML("piwik-tracker-draft.html")),
   tags$head(includeHTML("ga-tracker-draft-head.html")),
   tags$body(includeHTML("ga-tracker-draft-body.html")),
-  
+  leafletjs,
   ## UI elements ---------------------------------------------------------------
   page_navbar(
     
@@ -162,7 +156,9 @@ server <- function(input, output, session) {
     shiny.i18n::update_lang(language = input$language)
     })
   
-  mod_portal_server("tab_portal")
+  r_lang <- reactive({ input$language })
+  
+  mod_portal_server2("tab_portal", r_lang = r_lang)
   # ## OUTPUTS -----------------------------------------------------------------
   # output$my_map <- renderLeaflet({
   #   leaflet(options = leafletOptions(minZoom = 8)) |>

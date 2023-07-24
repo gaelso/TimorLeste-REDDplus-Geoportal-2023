@@ -29,7 +29,7 @@ mod_portal_UI <- function(id){
               label = NULL,
               choices = c("ESRI gray canvas"   = "Esri.WorldGrayCanvas",
                           "ESRI world imagery" = "Esri.WorldImagery",
-                          "OpenTopoMap"       = "OpenTopoMap",
+                          #"OpenTopoMap"       = "OpenTopoMap",
                           "OpenStreetMap"     = "OpenStreetMap.Mapnik"),
               selected = "Esri.WorldGrayCanvas"
             )
@@ -44,6 +44,10 @@ mod_portal_UI <- function(id){
               label = i18n$t("Activity Data sampling grid")
             ),
             checkboxInput(
+              inputId = ns("change_layout"), 
+              label = i18n$t("Activity Data change samples")
+            ),
+            checkboxInput(
               inputId = ns("grid_square"), 
               label = i18n$t("Activity Data visual interpretation frames")
             )
@@ -55,7 +59,7 @@ mod_portal_UI <- function(id){
             value = "accordion_hexmaps",
             
             radioButtons(
-              inputId = ns("lulucf"),
+              inputId = ns("hexmap"),
               label = NULL,
               choices = c(
                 "None" = "none",
@@ -107,7 +111,7 @@ mod_portal_UI <- function(id){
       ),
       
       ## Main panel
-      leafletOutput(outputId = ns("my_map"))
+      leafletOutput(outputId = ns("map"))
       
     ))
     

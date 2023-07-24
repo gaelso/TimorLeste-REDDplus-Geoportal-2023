@@ -12,14 +12,12 @@ mod_home_UI <- function(id){
   
   ## Intro ---------------------------------------------------------------------
   home_intro <- card(
-    class = "--bs-dark",
-    #card_header(h4("Welcome to Timor Leste REDD+ Geoportal")),
     img(
       src = "banner_en3.png",
       style = "width: 100%; max-width: 1200px; margin-left: auto; margin-right: auto;"
     ),
     h4("Welcome!"),
-    p("This portal shows spatial data and tables from Timor Leste National Forest Monitoring System (NFMS)."), 
+    p("This portal shows spatial and  tabular data from Timor Leste National Forest Monitoring System (NFMS)."), 
     p("The information presented here shows how human activities in Timor Leste Forests, for example deforestation or afforestation, contribute to climate change."),
     p("This information is part of the REDD+ mechanism to fight against climate change, as introduced by the United Nations Framework Convention on Climate Change.")
   )
@@ -35,13 +33,13 @@ mod_home_UI <- function(id){
         title = "FREL",
         value = "412,532",
         showcase = bsicons::bs_icon("arrow-up", size = NULL),
-        theme_color = "secondary"
+        theme_color = "danger"
       ),
       value_box(
         title = "Removals",
         value = "-747,694",
         showcase = bsicons::bs_icon("arrow-down", size = NULL),
-        theme_color = "primary"
+        theme_color = "success"
       ),
       value_box(
         title = "FRL",
@@ -60,7 +58,7 @@ mod_home_UI <- function(id){
   home_spatial <- card(
     h5("Spatial data"),
     p("The REDD+ Geoportal displays spatial information on land use and land use change during the reference period 2017-2021."),
-    p("It includes the hexagonal sampling grid for activity data and the visual interpretation results: annual land use and REDD+ activities"),
+    p("It includes the hexagonal sampling grid for activity data and the visual interpretation results: annual land use and REDD+ activities."),
     p("To see the data go to:"),
     p("PORTAL")
   )
@@ -68,7 +66,7 @@ mod_home_UI <- function(id){
   ## Calculations --------------------------------------------------------------
   home_calc <- card(
     h5("Calculations"),
-    p("The spatial data is interpreted into annual land use change matrices (Activity Data) and completed by carbon stock changes associated with each category of land use change (Emission Factors)."),
+    p("The spatial data is converted to annual land use change matrices (Activity Data) and completed by carbon stock changes associated with each category of land use change (Emission Factors)."),
     # p("When sampling points (both activity data and forest inventory plots) values are aggregated, the sampling uncertainty is added."),
     p("The matrices are then aggregated into annual greenhouse gas emissions and removals from the forestry sector."),
     p("To see the matrices and carbon accounting results, go to:"), 
@@ -78,8 +76,8 @@ mod_home_UI <- function(id){
   ## About ---------------------------------------------------------------------
   home_about <- card(
     h5("About"),
-    p("This portal was developed to improve Transparency on greenhouse gas emissions and removals of Timor Leste's forestry sector."),
-    p("The portal aslo includes information on the context around this portal, what is REDD+, some of the technical terms associated, as well as the methods for data collection and analysis."),
+    p("This portal was developed to improve transparency on greenhouse gas emissions and removals of Timor Leste's forestry sector."),
+    p("The portal also includes information on the context around this portal, what is REDD+, some of the technical terms associated, as well as the methods for data collection and analysis."),
     p("To access to this information, go to:"),
     p("ABOUT")
   )

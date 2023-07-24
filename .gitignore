@@ -1,5 +1,6 @@
 ## Custom gitignore
 data/
+data-raw/
 tests/
 
 ## Default R gitignore

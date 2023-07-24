@@ -23,6 +23,9 @@
   padding-right: 1rem !important;
 }
 
+.dropdown>.dropdown-menu.show {
+  z-index: 10000 !important;
+}
 /*[data-value="home"] {
   max-width: 1200px;
   margin-right: auto;
