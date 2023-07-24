@@ -93,9 +93,8 @@ ui <- tagList(
   leafletjs,
   ## UI elements ---------------------------------------------------------------
   page_navbar(
-    
+    id = "navbar",
     ## ++ Styling ++++++
-    # title = NULL,
     title = div(HTML('<i class="fi fi-tl"></i>'), i18n$t("Timor Leste REDD+ Geoportal"), style = "display:inline;"),
     window_title = "TL REDD+ Geoportal",
     theme = bs_theme(
@@ -152,30 +151,31 @@ ui <- tagList(
 
 server <- function(input, output, session) {
   
-  observeEvent(input$language, {
-    shiny.i18n::update_lang(language = input$language)
-    })
+  ## Reactives -----------------------------------------------------------------
   
   r_lang <- reactive({ input$language })
   
-  mod_portal_server2("tab_portal", r_lang = r_lang)
-  # ## OUTPUTS -----------------------------------------------------------------
-  # output$my_map <- renderLeaflet({
-  #   leaflet(options = leafletOptions(minZoom = 8)) |>
-  #     addProviderTiles(layerId = "basemap", provider = "Esri.WorldGrayCanvas") |>
-  #     setView(125, -9, zoom = 8) |>
-  #     setMaxBounds(lng1 = 124, lat1 = -10, lng2 = 128, lat2 = -8)
-  # })
-  # 
-  # ## OBSERVERS ---------------------------------------------------------------
-  # 
-  # ## Update basemap aka tiles
-  # observeEvent(input$basemap, {
-  #   leafletProxy("my_map") |>
-  #     removeTiles("basemap") |>
-  #     addProviderTiles(layerId = "basemap", input$basemap)
-  # })
+  rv <- reactiveValues(
+    to_portal = NULL,
+    to_calc   = NULL,
+    to_about  = NULL
+  )
   
+  
+  ## Server modules ------------------------------------------------------------
+  mod_home_server("tab_home", r_lang = r_lang, rv = rv)
+  mod_portal_server2("tab_portal", r_lang = r_lang)
+  
+  
+  ## OBSERVERS -----------------------------------------------------------------
+  
+  observeEvent(input$language, {
+    shiny.i18n::update_lang(language = input$language)
+  })
+  
+  observeEvent(rv$to_portal, {
+    updateNavlistPanel(inputId = "navbar", session = session, selected = "portal")
+  })
   
 } ## End server
 

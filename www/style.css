@@ -26,19 +26,5 @@
 .dropdown>.dropdown-menu.show {
   z-index: 10000 !important;
 }
-/*[data-value="home"] {
-  max-width: 1200px;
-  margin-right: auto;
-  margin-left: auto;
-}*/
 
-
-/*.bsblib-sidebar-layout {
-  --bsblib-sidebar-min-width: 250px;
-  --bsblib-sidebar-max-width: 400px;
-}*/
-
-/*.bslib-sidebar-layout > .main {
-  padding: 0 !important;
-}*/
 

@@ -13,19 +13,31 @@ mod_home_UI <- function(id){
   ## Intro ---------------------------------------------------------------------
   home_intro <- card(
     img(
-      src = "banner_en3.png",
+      src = "banner.png",
       style = "width: 100%; max-width: 1200px; margin-left: auto; margin-right: auto;"
     ),
-    h4("Welcome!"),
-    p("This portal shows spatial and  tabular data from Timor Leste National Forest Monitoring System (NFMS)."), 
-    p("The information presented here shows how human activities in Timor Leste Forests, for example deforestation or afforestation, contribute to climate change."),
-    p("This information is part of the REDD+ mechanism to fight against climate change, as introduced by the United Nations Framework Convention on Climate Change.")
+    div(
+      id = ns("intro_en"),
+      h4("Welcome!"),
+      p("This portal shows spatial and  tabular data from Timor Leste National Forest Monitoring System (NFMS)."), 
+      p("The information presented here shows how human activities in Timor Leste Forests, for example deforestation or afforestation, contribute to climate change."),
+      p("This information is part of the REDD+ mechanism to fight against climate change, as introduced by the United Nations Framework Convention on Climate Change.")
+    ),
+    shinyjs::hidden(div(
+      id = ns("intro_te"),
+      h4("Benvimdu!"),
+      h4("TO BE TRANSLATED"),
+      p("This portal shows spatial and  tabular data from Timor Leste National Forest Monitoring System (NFMS)."), 
+      p("The information presented here shows how human activities in Timor Leste Forests, for example deforestation or afforestation, contribute to climate change."),
+      p("This information is part of the REDD+ mechanism to fight against climate change, as introduced by the United Nations Framework Convention on Climate Change.")
+    ))
   )
   
   ## Highlights ----------------------------------------------------------------
   home_highlights <-  card(
     layout_column_wrap(
       width = "240px",
+      #fixed_width = TRUE,
       #height = "240px", 
       fill = FALSE,
       style = "margin-top: auto; margin-bottom: auto;",
@@ -49,18 +61,29 @@ mod_home_UI <- function(id){
       )
     ),
     div(
-      em("Forest Reference (Emission) Levels 2017-2021 (tCO2e/year)"),
+      em(i18n$t("Forest Reference (Emission) Levels 2017-2021 (tCO2e/year)")),
       style = "text-align: center; font-size: small;"
     )
   )
   
   ## Spatial -------------------------------------------------------------------
   home_spatial <- card(
-    h5("Spatial data"),
-    p("The REDD+ Geoportal displays spatial information on land use and land use change during the reference period 2017-2021."),
-    p("It includes the hexagonal sampling grid for activity data and the visual interpretation results: annual land use and REDD+ activities."),
-    p("To see the data go to:"),
-    p("PORTAL")
+    div(
+      id = ns("spatial_en"),
+      h5("Spatial data"),
+      p("The REDD+ Geoportal displays spatial information on land use and land use change during the reference period 2017-2021."),
+      p("It includes the hexagonal sampling grid for activity data and the visual interpretation results: annual land use and REDD+ activities."),
+      p("To see the data go to:")
+    ),
+    shinyjs::hidden(div(
+      id = ns("spatial_te"),
+      h5("Spatial data"),
+      h5("TO BE TRANSLATED"),
+      p("The REDD+ Geoportal displays spatial information on land use and land use change during the reference period 2017-2021."),
+      p("It includes the hexagonal sampling grid for activity data and the visual interpretation results: annual land use and REDD+ activities."),
+      p("To see the data go to:")
+    )),
+    actionButton(inputId = ns("to_portal"), label = i18n$t("Portal"), class = "btn-primary")
   )
   
   ## Calculations --------------------------------------------------------------
