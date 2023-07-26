@@ -26,7 +26,7 @@ mod_home_UI <- function(id){
     shinyjs::hidden(div(
       id = ns("intro_te"),
       h4("Benvimdu!"),
-      h4("TO BE TRANSLATED"),
+      h6("TO BE TRANSLATED", style = "text-align:center;"),
       p("This portal shows spatial and  tabular data from Timor Leste National Forest Monitoring System (NFMS)."), 
       p("The information presented here shows how human activities in Timor Leste Forests, for example deforestation or afforestation, contribute to climate change."),
       p("This information is part of the REDD+ mechanism to fight against climate change, as introduced by the United Nations Framework Convention on Climate Change.")
@@ -36,32 +36,47 @@ mod_home_UI <- function(id){
   ## Highlights ----------------------------------------------------------------
   home_highlights <-  card(
     layout_column_wrap(
-      width = "240px",
+      width = "280px",
       #fixed_width = TRUE,
       #height = "240px", 
       fill = FALSE,
       style = "margin-top: auto; margin-bottom: auto;",
       value_box(
-        title = "FREL",
+        title = i18n$t("FREL (tCO2/y)"),
         value = "412,532",
         showcase = bsicons::bs_icon("arrow-up", size = NULL),
         theme_color = "danger"
       ),
       value_box(
-        title = "Removals",
-        value = "-747,694",
-        showcase = bsicons::bs_icon("arrow-down", size = NULL),
-        theme_color = "success"
-      ),
-      value_box(
-        title = "FRL",
+        title = i18n$t("FRL (tCO2/y)"),
         value = "-335,162",
         showcase = bsicons::bs_icon("arrow-down-up", size = NULL),
         theme_color = "info"
       )
     ),
+    layout_column_wrap(
+      width = "280px",
+      #fixed_width = TRUE,
+      #height = "240px", 
+      fill = FALSE,
+      style = "margin-top: auto; margin-bottom: auto;",
+      value_box(
+        title = i18n$t("Deforestation (ha/y)"),
+        value = "711",
+        showcase = vb_df,
+        full_screen = TRUE,
+        theme_color = "secondary"
+      ),
+      value_box(
+        title = i18n$t("Afforestation (ha/y)"),
+        value = "9,311",
+        showcase = vb_af,
+        full_screen = TRUE,
+        theme_color = "primary"
+      )
+    ),
     div(
-      em(i18n$t("Forest Reference (Emission) Levels 2017-2021 (tCO2e/year)")),
+      em(i18n$t("Average Forest area change and Forest Reference (Emission) Levels 2017-2021.")),
       style = "text-align: center; font-size: small;"
     )
   )
@@ -78,31 +93,69 @@ mod_home_UI <- function(id){
     shinyjs::hidden(div(
       id = ns("spatial_te"),
       h5("Spatial data"),
-      h5("TO BE TRANSLATED"),
+      h6("TO BE TRANSLATED", style = "text-align:center;"),
       p("The REDD+ Geoportal displays spatial information on land use and land use change during the reference period 2017-2021."),
       p("It includes the hexagonal sampling grid for activity data and the visual interpretation results: annual land use and REDD+ activities."),
       p("To see the data go to:")
     )),
-    actionButton(inputId = ns("to_portal"), label = i18n$t("Portal"), class = "btn-primary")
+    actionButton(
+      inputId = ns("to_portal"), 
+      label = i18n$t("Portal"), 
+      class = "btn-primary",
+      style = "width: 128px; margin: auto"
+      )
   )
   
   ## Calculations --------------------------------------------------------------
   home_calc <- card(
-    h5("Calculations"),
-    p("The spatial data is converted to annual land use change matrices (Activity Data) and completed by carbon stock changes associated with each category of land use change (Emission Factors)."),
-    # p("When sampling points (both activity data and forest inventory plots) values are aggregated, the sampling uncertainty is added."),
-    p("The matrices are then aggregated into annual greenhouse gas emissions and removals from the forestry sector."),
-    p("To see the matrices and carbon accounting results, go to:"), 
-    p("CALCULATIONS")
+    div(
+      id = ns("calc_en"),
+      h5("Calculations"),
+      p("The spatial data is converted to annual land use change matrices (Activity Data) and completed by carbon stock changes associated with each category of land use change (Emission Factors)."),
+      # p("When sampling points (both activity data and forest inventory plots) values are aggregated, the sampling uncertainty is added."),
+      p("The matrices are then aggregated into annual greenhouse gas emissions and removals from the forestry sector."),
+      p("To see the matrices and carbon accounting results, go to:")
+    ),
+    shinyjs::hidden(div(
+      id = ns("calc-te"),
+      h6("TO BE TRANSLATED", style = "text-align:center;"),
+      h5("Calculations"),
+      p("The spatial data is converted to annual land use change matrices (Activity Data) and completed by carbon stock changes associated with each category of land use change (Emission Factors)."),
+      # p("When sampling points (both activity data and forest inventory plots) values are aggregated, the sampling uncertainty is added."),
+      p("The matrices are then aggregated into annual greenhouse gas emissions and removals from the forestry sector."),
+      p("To see the matrices and carbon accounting results, go to:")
+    )),
+    actionButton(
+      inputId = ns("to_calc"), 
+      label = i18n$t("Calculations"), 
+      class = "btn-primary",
+      style = "width: 128px; margin: auto"
+      )
   )
   
   ## About ---------------------------------------------------------------------
-  home_about <- card(
-    h5("About"),
-    p("This portal was developed to improve transparency on greenhouse gas emissions and removals of Timor Leste's forestry sector."),
-    p("The portal also includes information on the context around this portal, what is REDD+, some of the technical terms associated, as well as the methods for data collection and analysis."),
-    p("To access to this information, go to:"),
-    p("ABOUT")
+  home_info <- card(
+    div(
+      id = ns("info_en"),
+      h5("More information"),
+      p("This portal was developed to improve transparency on greenhouse gas emissions and removals of Timor Leste's forestry sector."),
+      p("The portal also includes information on the context around this portal, what is REDD+, some of the technical terms associated, as well as the methods for data collection and analysis."),
+      p("To access to this information, go to:")
+    ),
+    shinyjs::hidden(div(
+      id = ns("info_te"),
+      h6("TO BE TRANSLATED", style = "text-align:center;"),
+      h5("More information"),
+      p("This portal was developed to improve transparency on greenhouse gas emissions and removals of Timor Leste's forestry sector."),
+      p("The portal also includes information on the context around this portal, what is REDD+, some of the technical terms associated, as well as the methods for data collection and analysis."),
+      p("To access to this information, go to:")
+    )),
+    actionButton(
+      inputId = ns("to_info"), 
+      label = i18n$t("More info"), 
+      class = "btn-primary",
+      style = "width: 128px; margin: auto"
+    )
   )
   
   ##
@@ -114,6 +167,7 @@ mod_home_UI <- function(id){
     
     layout_column_wrap(
       width = "300px",
+      #style = css(grid_template_columns = "7fr 5fr"),
       home_intro,
       home_highlights,
     ),
@@ -124,7 +178,7 @@ mod_home_UI <- function(id){
       width = "200px",
       home_spatial,
       home_calc,
-      home_about
+      home_info
     ), 
     
     br()
@@ -132,58 +186,3 @@ mod_home_UI <- function(id){
   )
   
 } ## END module UI function
-
-# tagList(
-# 
-#   ## FREL/FRL cards --------------------------------------------------------
-#   card(
-#     layout_columns(
-#       fill = FALSE,
-#       value_box(
-#         title = "FREL",
-#         value = "412,532",
-#         showcase = bsicons::bs_icon("arrow-up", size = NULL),
-#         theme_color = "secondary"
-#       ),
-#       value_box(
-#         title = "Removals",
-#         value = "-747,694",
-#         showcase = bsicons::bs_icon("arrow-down", size = NULL),
-#         theme_color = "primary"
-#       ),
-#       value_box(
-#         title = "FRL",
-#         value = "-335,162",
-#         showcase = bsicons::bs_icon("arrow-down-up", size = NULL),
-#         theme_color = "info"
-#       )
-#     ),
-# 
-#     div(
-#       em("Forest Reference (Emission) Levels 2017-2021 (tCO2e/year)"),
-#       style = "text-align: center; font-size: small;"
-#     )
-# 
-#   ),
-# 
-#   ## Intro -----------------------------------------------------------------
-#   card(
-#     #card_header(h4("Welcome to Timor Leste REDD+ Geoportal")),
-#     img(
-#       src = "banner_en3.png",
-#       style = "width: 100%; max-width: 1200px; margin-left: auto; margin-right: auto;"
-#     ),
-#     h4("Welcome!"),
-#     p("This portal shows spatial data and tables related to Timor Leste engagment in REDD+, the mechanism to reduce greenhouse gas (GHG) emissions from Deforestation, Forest Degradation, plus the role of sustainable forest management, conservation and enhancement of forest carbon stocks.")
-#   ),
-# 
-#   ## Details ---------------------------------------------------------------
-#   card(
-#     h5("Presentation of the data"),
-#     p("More specifically the data presented here are average levels of GHG emissions and removals from REDD+ activities, in tCO2e/year, used as a baseline or reference level against which future performances on emission reductions can be compared."),
-#     h4(
-#       "Placeholder for home content",
-#       style = "text-align: center; margin-top: auto; margin-bottom: auto;"
-#     ),
-#   )
-# )

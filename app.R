@@ -24,11 +24,14 @@ library(readxl)
 library(shinyjs)
 library(shiny.i18n)
 library(shinyWidgets)
+library(htmltools)
 library(bsicons)
+library(plotly)
+library(readxl)
 
 ## Load data
 source("R/data-AD.R", local = TRUE)
-#source("R/data-EF.R", local = TRUE)
+source("R/data-FRL.R", local = TRUE)
 
 ## Load Extra functions for leaflet setStyle() and setShapeStyle()
 source("R/leaflet-setStyle-js.R", local = TRUE)
@@ -130,10 +133,10 @@ ui <- tagList(
     ),
     
     nav_panel(
-      title = i18n$t("About"), 
-      value = "calc", 
+      title = i18n$t("Info"), 
+      value = "info", 
       icon = icon("lightbulb"), 
-      mod_about_UI("tab_about") ## See R/mod_about_UI.R
+      mod_about_UI("tab_info") ## See R/mod_about_UI.R
     ),
     
     nav_spacer(),
@@ -175,6 +178,10 @@ server <- function(input, output, session) {
   
   observeEvent(rv$to_portal, {
     updateNavlistPanel(inputId = "navbar", session = session, selected = "portal")
+  })
+  
+  observeEvent(rv$to_calc, {
+    updateNavlistPanel(inputId = "navbar", session = session, selected = "calc")
   })
   
 } ## End server

@@ -31,7 +31,7 @@ palette_redd <- data.frame(
 
 sf_country   <- st_read("data/TimorLeste.geoJSON", quiet = TRUE)
 sf_AD_square <- st_read("data/sf_AD_square.geoJSON", quiet = T)
-sf_AD        <- st_read("data-raw/AD-spatial-grid2.geoJSON") 
+sf_AD        <- st_read("data-raw/AD-spatial-grid2.geoJSON", quiet = T) 
 
 
 ## Make spatial layers ---------------------------------------------------------
