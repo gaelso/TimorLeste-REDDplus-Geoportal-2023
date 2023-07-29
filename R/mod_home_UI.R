@@ -18,10 +18,12 @@ mod_home_UI <- function(id){
     ),
     div(
       id = ns("intro_en"),
-      h4("Welcome!"),
-      p("This portal shows spatial and  tabular data from Timor Leste National Forest Monitoring System (NFMS)."), 
-      p("The information presented here shows how human activities in Timor Leste Forests, for example deforestation or afforestation, contribute to climate change."),
-      p("This information is part of the REDD+ mechanism to fight against climate change, as introduced by the United Nations Framework Convention on Climate Change.")
+      h1("Welcome!"),
+      p(tags$b("Timor Leste REDD+ Geoportal"), "shows spatial and tabular data from Timor Leste National Forest Monitoring System (NFMS) in an interactive way."), 
+      p("It provides insights on how human activities in Timor Leste forests, for example deforestation or afforestation, contribute to climate change."),
+      #p("This information is part of the REDD+ mechanism to fight against climate change, as introduced by the United Nations Framework Convention on Climate Change (UNFCCC)."),
+      p("The data presented here was submitted to the United Nations Framework Convention on Climate Change in January 2023. The submission document and its technical assessment can be found in their repository:"),
+      tags$a(href = "https://redd.unfccc.int/submissions.html?country=tls", "https://redd.unfccc.int/submissions.html?country=tls")
     ),
     shinyjs::hidden(div(
       id = ns("intro_te"),
@@ -87,20 +89,28 @@ mod_home_UI <- function(id){
       id = ns("spatial_en"),
       h5("Spatial data"),
       p("The REDD+ Geoportal displays spatial information on land use and land use change during the reference period 2017-2021."),
-      p("It includes the hexagonal sampling grid for activity data and the visual interpretation results: annual land use and REDD+ activities."),
-      p("To see the data go to:")
+      p("It includes:"),
+      tags$ul(
+        tags$li("Base layers to switch between canvas, high resolution images and OpenStreetMap."),
+        tags$li("The hexagonal sampling grid for land use and land use change visual interpretation, including additional information on the hexagons were change was detected."),
+        tags$li("Visual interpretation results: annual land use and REDD+ activities.")
+      )
     ),
     shinyjs::hidden(div(
       id = ns("spatial_te"),
       h5("Spatial data"),
       h6("TO BE TRANSLATED", style = "text-align:center;"),
-      p("The REDD+ Geoportal displays spatial information on land use and land use change during the reference period 2017-2021."),
-      p("It includes the hexagonal sampling grid for activity data and the visual interpretation results: annual land use and REDD+ activities."),
-      p("To see the data go to:")
+      h5("Spatial data"),
+      p("The REDD+ Geoportal displays spatial information on land use and land use change during the reference period 2017-2021. It includes:"),
+      tags$ul(
+        tags$li("Base layers to switch between canvas, high resolution images and OpenStreetMap."),
+        tags$li("The hexagonal sampling grid for land use and land use change visual interpretation, including additional information on the hexagons were change was detected."),
+        tags$li("Visual interpretation results: annual land use and REDD+ activities.")
+      )
     )),
     actionButton(
       inputId = ns("to_portal"), 
-      label = i18n$t("Portal"), 
+      label = i18n$t("go to Portal"), 
       class = "btn-primary",
       style = "width: 128px; margin: auto"
       )
@@ -122,12 +132,12 @@ mod_home_UI <- function(id){
       h5("Calculations"),
       p("The spatial data is converted to annual land use change matrices (Activity Data) and completed by carbon stock changes associated with each category of land use change (Emission Factors)."),
       # p("When sampling points (both activity data and forest inventory plots) values are aggregated, the sampling uncertainty is added."),
-      p("The matrices are then aggregated into annual greenhouse gas emissions and removals from the forestry sector."),
-      p("To see the matrices and carbon accounting results, go to:")
+      p("The matrices are then aggregated into annual greenhouse gas emissions and removals from the forestry sector and their average over the reference period consitute the FREL/FRL."),
+      p("See the data in the Calculation tab.")
     )),
     actionButton(
       inputId = ns("to_calc"), 
-      label = i18n$t("Calculations"), 
+      label = i18n$t("go to Calculations"), 
       class = "btn-primary",
       style = "width: 128px; margin: auto"
       )
@@ -139,8 +149,8 @@ mod_home_UI <- function(id){
       id = ns("info_en"),
       h5("More information"),
       p("This portal was developed to improve transparency on greenhouse gas emissions and removals of Timor Leste's forestry sector."),
-      p("The portal also includes information on the context around this portal, what is REDD+, some of the technical terms associated, as well as the methods for data collection and analysis."),
-      p("To access to this information, go to:")
+      p("It also includes information on the context around this portal, what is REDD+, some of the technical terms associated, as well as the methods for data collection and analysis."),
+      p("Find out more in the Info tab.")
     ),
     shinyjs::hidden(div(
       id = ns("info_te"),
@@ -152,7 +162,7 @@ mod_home_UI <- function(id){
     )),
     actionButton(
       inputId = ns("to_info"), 
-      label = i18n$t("More info"), 
+      label = i18n$t("More information"), 
       class = "btn-primary",
       style = "width: 128px; margin: auto"
     )

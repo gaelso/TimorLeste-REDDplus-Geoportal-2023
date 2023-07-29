@@ -80,6 +80,7 @@ ui <- tagList(
   ## Setup ---------------------------------------------------------------------
   shiny::withMathJax(),
   shinyjs::useShinyjs(),
+  shinyWidgets::useSweetAlert(),
   shiny.i18n::usei18n(i18n),
   tags$head(tags$link(rel = "stylesheet", type = "text/css", href = "style.css")),
   htmltools::htmlDependency(
@@ -103,7 +104,7 @@ ui <- tagList(
     theme = bs_theme(
       version = 5,
       bootswatch = "minty",
-      base_font = font_google("Merriweather"),
+      base_font = font_google("Open Sans", wght = c(400, 700)),
       code_font = font_google("Fira Code"),
       heading_font = font_google("Quicksand", wght = 700)
     ),

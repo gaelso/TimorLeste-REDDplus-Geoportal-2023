@@ -27,4 +27,28 @@
   z-index: 10000 !important;
 }
 
+/* For portal */
 
+.accordion-body {
+  padding: 8px 16px 16px 16px;
+}
+
+.accordion-button {
+  padding: 16px;
+}
+
+
+/* Portal info popup style */
+body.swal2-height-auto {
+  height: 100% !important;
+}
+
+.swal2-popup {
+  padding: 0 !important;
+  font-size: small !important; 
+  text-align: left;
+}
+
+.swal2-html-container {
+  margin: 16px;
+}

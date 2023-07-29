@@ -10,12 +10,12 @@ mod_portal_UI <- function(id){
   ## UI elements wrapped in a tagList() function
   #tagList(
     
-    card(layout_sidebar(
+    card(full_screen = T, layout_sidebar(
       padding = 0, 
       
       ## Sidebar ###############################################################
       sidebar = sidebar(
-        width = "320px",
+        width = "336px",
         accordion(
           open = TRUE, #"accordion_hexmaps",
           multiple = TRUE,
@@ -24,14 +24,25 @@ mod_portal_UI <- function(id){
           accordion_panel(
             title = i18n$t("Base map layers"),
             value = "accordion_basemap",
-            radioButtons(
-              inputId = ns("basemap"), 
-              label = NULL,
-              choices = c("ESRI gray canvas"   = "Esri.WorldGrayCanvas",
-                          "ESRI world imagery" = "Esri.WorldImagery",
-                          #"OpenTopoMap"       = "OpenTopoMap",
-                          "OpenStreetMap"     = "OpenStreetMap.Mapnik"),
-              selected = "Esri.WorldGrayCanvas"
+            layout_column_wrap(
+              width = NULL,
+              style = css(grid_template_columns = "5fr 1fr"),
+              prettyRadioButtons(
+                inputId = ns("basemap"), 
+                label = NULL,
+                choices = c("ESRI gray canvas"   = "Esri.WorldGrayCanvas",
+                            "ESRI world imagery" = "Esri.WorldImagery",
+                            #"OpenTopoMap"       = "OpenTopoMap",
+                            "OpenStreetMap"     = "OpenStreetMap.Mapnik"),
+                selected = "Esri.WorldGrayCanvas"
+              ),
+              actionButton(
+                inputId = ns("info_layer"), 
+                label = bsicons::bs_icon("info-circle", class = "text-primary", size = "20px"), 
+                #class = "btn-primary",
+                style = "padding:0; margin-left:auto; margin-bottom: auto; 
+                line-height:20px !important; border:0; background-color:var(--bs-accordion-active-bg);"
+              )
             )
           ),
           
@@ -39,17 +50,33 @@ mod_portal_UI <- function(id){
           accordion_panel(
             title = i18n$t("Grid layouts"),
             value = "accordion_grids",
-            checkboxInput(
-              inputId = ns("grid_layout"), 
-              label = i18n$t("Activity Data sampling grid")
-            ),
-            checkboxInput(
-              inputId = ns("change_layout"), 
-              label = i18n$t("Activity Data change samples")
-            ),
-            checkboxInput(
-              inputId = ns("grid_square"), 
-              label = i18n$t("Activity Data visual interpretation frames")
+            layout_column_wrap(
+              width = NULL,
+              style = css(grid_template_columns = "5fr 1fr"),
+              card(card_body(
+                style = "padding:0;",
+                fill = FALSE,
+                fillable = FALSE,
+                checkboxInput(
+                  inputId = ns("grid_layout"), 
+                  label = i18n$t("Activity Data sampling grid")
+                ),
+                checkboxInput(
+                  inputId = ns("change_layout"), 
+                  label = i18n$t("Activity Data changes")
+                ),
+                checkboxInput(
+                  inputId = ns("grid_square"), 
+                  label = i18n$t("Visual interpretation frames")
+                )
+              ), style = "border:0;", fill = FALSE, fillable = FALSE),
+              actionButton(
+                inputId = ns("info_grid"), 
+                label = bsicons::bs_icon("info-circle", class = "text-primary", size = "20px"), 
+                #class = "btn-primary",
+                style = "padding:0; margin-left:auto; margin-bottom: auto; 
+                line-height:20px !important; border:0; background-color:var(--bs-accordion-active-bg);"
+              )
             )
           ),
           
@@ -57,23 +84,29 @@ mod_portal_UI <- function(id){
           accordion_panel(
             title = i18n$t("Land use and land use change hexmaps"),
             value = "accordion_hexmaps",
-            
-            radioButtons(
-              inputId = ns("hexmap"),
-              label = NULL,
-              choices = c(
-                "None" = "none",
-                "REDD+ activities hexmap" = "redd_hex",
-                "Annual land use hex map" = "lu_hex"
+            layout_column_wrap(
+              width = NULL,
+              style = css(grid_template_columns = "5fr 1fr"),
+              prettyRadioButtons(
+                inputId = ns("hexmap"),
+                label = NULL,
+                choices = c(
+                  "None" = "none",
+                  "REDD+ activities hexmap" = "redd_hex",
+                  "Annual land use hexmap" = "lu_hex"
+                ),
+                selected = "none"
               ),
-              selected = "none"
+              actionButton(
+                inputId = ns("info_redd"), 
+                label = bsicons::bs_icon("info-circle", class = "text-primary", size = "20px"), 
+                #class = "btn-primary",
+                style = "padding:0; margin-left:auto; margin-bottom: auto; 
+                line-height:20px !important; border:0; background-color:var(--bs-accordion-active-bg);"
+              )
             ),
             
             ## ++ REDD+ activities controls ++
-            # checkboxInput(
-            #   inputId = ns("redd_hex"), 
-            #   label = i18n$t("REDD+ activities hexmap")
-            # ),
             shinyjs::hidden(sliderInput(
               inputId = ns("redd_opacity"), label = NULL, min = 0, max = 1, step = 0.1,
               value = 1, ticks = FALSE
@@ -86,10 +119,6 @@ mod_portal_UI <- function(id){
             )),
             
             ## ++ Land use annual controls ++ 
-            # checkboxInput(
-            #   inputId = ns("lu_hex"), 
-            #   label = i18n$t("Annual land use hex map")
-            # ),
             shinyjs::hidden(sliderInput(
               inputId = ns("lu_opacity"), 
               label = NULL, min = 0, max = 1, step = 0.1, value = 1, 

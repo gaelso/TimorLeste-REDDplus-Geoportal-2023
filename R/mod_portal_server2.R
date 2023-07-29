@@ -215,6 +215,101 @@ mod_portal_server2 <- function(id, r_lang) {
       }
     })
   
+    ## Sweet alert -------------------------------------------------------------
+    observeEvent(input$info_layer, {
+      if (r_lang() == "en") {
+        sendSweetAlert(
+          session = session,
+          title = NA,
+          text = div(
+            "Switch between a canvas, recent high resolution satellite images and OpenStreetMap base layers.",
+            style = "font-size:small; text-align:left;"
+          ),
+          type = NULL,
+          btn_labels = NA, 
+          width = "400px"
+        )
+      } else {
+        sendSweetAlert(
+          session = session,
+          title = NA,
+          text = div(
+            p("TO TRANSLATE"),
+            p("Switch between a canvas, recent high resolution satellite images and OpenStreetMap base layers."),
+            style = "font-size:small; text-align:left;"
+          ),
+          type = NULL,
+          btn_labels = NA, 
+          width = "400px"
+        )
+      }
+    })
+    
+    observeEvent(input$info_grid, {
+      if (r_lang() == "en") {
+        sendSweetAlert(
+          session = session,
+          title = NA,
+          text = div(
+            p(strong("Grid layouts"), "display the systematic grids used for activity data collection."), 
+            p("The hexagons show the areas that each sample represent while the squares show the exact visual interpretation frames."),
+            p("The change samples highlight the locations were land use changes were detected."),
+            style = "font-size:small; text-align:left;"
+          ),
+          type = NULL,
+          btn_labels = NA, 
+          width = "400px"
+        )
+      } else {
+        sendSweetAlert(
+          session = session,
+          title = NA,
+          text = div(
+            p("TO BE TRANSLATED"),
+            p("Display the systematic grids used for activity data collection."), 
+            p("The hexagons represent the areas that each sample represent while the squares show the exact visual interpretation frames."),
+            p("The change samples highlight the locations were land use changes were detected."),
+            style = "font-size:small; text-align:left;"
+          ),
+          type = NULL,
+          btn_labels = NA,
+          width = "400px"
+          )
+      }
+    })
+    
+    observeEvent(input$info_grid, {
+      if (r_lang() == "en") {
+        sendSweetAlert(
+          session = session,
+          title = NA,
+          text = div(
+            p(strong("Grid layouts"), "display the systematic grids used for activity data collection."), 
+            p("The hexagons show the areas that each sample represent while the squares show the exact visual interpretation frames."),
+            p("The change samples highlight the locations were land use changes were detected."),
+            style = "font-size:small; text-align:left;"
+          ),
+          type = NULL,
+          btn_labels = NA, 
+          width = "400px"
+        )
+      } else {
+        sendSweetAlert(
+          session = session,
+          title = NA,
+          text = div(
+            p("TO BE TRANSLATED"),
+            p("Display the systematic grids used for activity data collection."), 
+            p("The hexagons represent the areas that each sample represent while the squares show the exact visual interpretation frames."),
+            p("The change samples highlight the locations were land use changes were detected."),
+            style = "font-size:small; text-align:left;"
+          ),
+          type = NULL,
+          btn_labels = NA,
+          width = "400px"
+        )
+      }
+    })
     
     
   }) ## END module server function
